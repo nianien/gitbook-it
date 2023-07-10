@@ -15,4 +15,5 @@ for file in docs/*; do
   fi
 done
 git add .
+git commit -m"gitbook build"
 git push origin gh-pages
