@@ -1,0 +1,718 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>大数据分析常用去重算法分析『HyperLogLog 篇』 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../../ye-wu-jia-gou/" />
+    
+    
+    <link rel="prev" href="da-shu-ju-fen-xi-chang-yong-qu-zhong-suan-fa-fen-xi-bitmap-pian.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    微服务系列
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" data-path="../../wei-fu-wu-xi-lie/wei-fu-wu-ji-qi-yan-jin-shi.html">
+            
+                <a href="../../wei-fu-wu-xi-lie/wei-fu-wu-ji-qi-yan-jin-shi.html">
+            
+                    
+                    微服务及其演进史
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.2" data-path="../../wei-fu-wu-xi-lie/wei-fu-wu-quan-jing-jia-gou.html">
+            
+                <a href="../../wei-fu-wu-xi-lie/wei-fu-wu-quan-jing-jia-gou.html">
+            
+                    
+                    微服务全景架构
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.3" data-path="../../wei-fu-wu-xi-lie/wei-fu-wu-chai-fen-ce-lve.html">
+            
+                <a href="../../wei-fu-wu-xi-lie/wei-fu-wu-chai-fen-ce-lve.html">
+            
+                    
+                    微服务拆分策略
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.4" data-path="../../wei-fu-wu-xi-lie/wei-fu-wu-chai-fen-ce-lve-fu-jia-pian.html">
+            
+                <a href="../../wei-fu-wu-xi-lie/wei-fu-wu-chai-fen-ce-lve-fu-jia-pian.html">
+            
+                    
+                    微服务拆分策略（附加篇）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.5" data-path="../../wei-fu-wu-xi-lie/fu-wu-zhu-ce-yu-fa-xian.html">
+            
+                <a href="../../wei-fu-wu-xi-lie/fu-wu-zhu-ce-yu-fa-xian.html">
+            
+                    
+                    服务注册与发现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.6" data-path="../../wei-fu-wu-xi-lie/fu-wu-zhu-ce-yu-fa-xian-shi-jian-pian.html">
+            
+                <a href="../../wei-fu-wu-xi-lie/fu-wu-zhu-ce-yu-fa-xian-shi-jian-pian.html">
+            
+                    
+                    服务注册与发现（实践篇）
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    系统架构
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../xiao-xi-dui-lie/">
+            
+                <a href="../xiao-xi-dui-lie/">
+            
+                    
+                    消息队列
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1.1" data-path="../xiao-xi-dui-lie/rabbitmqrocketmqkafka-qu-bie.html">
+            
+                <a href="../xiao-xi-dui-lie/rabbitmqrocketmqkafka-qu-bie.html">
+            
+                    
+                    RabbitMQ、RocketMQ、Kafka区别
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../fen-bu-shi-shi-wu/">
+            
+                <a href="../fen-bu-shi-shi-wu/">
+            
+                    
+                    分布式事务
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.2.1" data-path="../fen-bu-shi-shi-wu/fen-bu-shi-shi-wu-zhi-liang-jie-duan-san-jie-ti-jiao-xie-yi.html">
+            
+                <a href="../fen-bu-shi-shi-wu/fen-bu-shi-shi-wu-zhi-liang-jie-duan-san-jie-ti-jiao-xie-yi.html">
+            
+                    
+                    分布式事务之两阶段、三阶提交协议
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="../jia-gou-she-ji/">
+            
+                <a href="../jia-gou-she-ji/">
+            
+                    
+                    架构设计
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.3.1" data-path="../jia-gou-she-ji/yi-ge-miao-sha-xi-tong-de-she-ji-si-kao.html">
+            
+                <a href="../jia-gou-she-ji/yi-ge-miao-sha-xi-tong-de-she-ji-si-kao.html">
+            
+                    
+                    一个秒杀系统的设计思考
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.2" data-path="../jia-gou-she-ji/gao-bing-fa-xi-tong-she-ji-de-15-ge-jin-nang.html">
+            
+                <a href="../jia-gou-she-ji/gao-bing-fa-xi-tong-she-ji-de-15-ge-jin-nang.html">
+            
+                    
+                    高并发系统设计的15个锦囊
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.3" data-path="../jia-gou-she-ji/jia-gou-she-ji-mo-ban.html">
+            
+                <a href="../jia-gou-she-ji/jia-gou-she-ji-mo-ban.html">
+            
+                    
+                    架构设计模板
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.4" data-path="../jia-gou-she-ji/cong-0-kai-shi-zuo-yi-ge-hou-tai-jia-gou.html">
+            
+                <a href="../jia-gou-she-ji/cong-0-kai-shi-zuo-yi-ge-hou-tai-jia-gou.html">
+            
+                    
+                    从0开始做一个后台架构
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    大数据
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.4.1" data-path="da-shu-ju-fen-xi-chang-yong-qu-zhong-suan-fa-fen-xi-bitmap-pian.html">
+            
+                <a href="da-shu-ju-fen-xi-chang-yong-qu-zhong-suan-fa-fen-xi-bitmap-pian.html">
+            
+                    
+                    大数据分析常用去重算法分析『Bitmap 篇』
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.4.2" data-path="da-shu-ju-fen-xi-chang-yong-qu-zhong-suan-fa-fen-xi-hyperloglog-pian.html">
+            
+                <a href="da-shu-ju-fen-xi-chang-yong-qu-zhong-suan-fa-fen-xi-hyperloglog-pian.html">
+            
+                    
+                    大数据分析常用去重算法分析『HyperLogLog 篇』
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../../ye-wu-jia-gou/">
+            
+                <a href="../../ye-wu-jia-gou/">
+            
+                    
+                    业务架构
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../../ye-wu-jia-gou/zai-xian-guang-gao-ye-wu.html">
+            
+                <a href="../../ye-wu-jia-gou/zai-xian-guang-gao-ye-wu.html">
+            
+                    
+                    在线广告业务
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="../../ye-wu-jia-gou/guan-yu-ye-wu-ping-tai-jia-gou-de-si-kao.html">
+            
+                <a href="../../ye-wu-jia-gou/guan-yu-ye-wu-ping-tai-jia-gou-de-si-kao.html">
+            
+                    
+                    关于业务平台架构的思考
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="../../ye-wu-jia-gou/yong-hu-mo-xing/">
+            
+                <a href="../../ye-wu-jia-gou/yong-hu-mo-xing/">
+            
+                    
+                    用户模型
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.3.1" data-path="../../ye-wu-jia-gou/yong-hu-mo-xing/yong-hu-xi-tong-she-ji-san-hu-mo-xing-san-ceng-shen-fen-mo-xing.html">
+            
+                <a href="../../ye-wu-jia-gou/yong-hu-mo-xing/yong-hu-xi-tong-she-ji-san-hu-mo-xing-san-ceng-shen-fen-mo-xing.html">
+            
+                    
+                    用户系统设计:三户模型&三层身份模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.2" data-path="../../ye-wu-jia-gou/yong-hu-mo-xing/jie-xi-san-hu-mo-xing-ji-jian-li-zhang-hu-mo-xing.html">
+            
+                <a href="../../ye-wu-jia-gou/yong-hu-mo-xing/jie-xi-san-hu-mo-xing-ji-jian-li-zhang-hu-mo-xing.html">
+            
+                    
+                    解析「三户模型」及建立账户模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="../../ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/">
+            
+                <a href="../../ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/">
+            
+                    
+                    业务的三重视角
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.4.1" data-path="../../ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/dao-di-sha-jiao-dong-ye-wu-ye-wu-de-san-zhong-shi-jiao.html">
+            
+                <a href="../../ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/dao-di-sha-jiao-dong-ye-wu-ye-wu-de-san-zhong-shi-jiao.html">
+            
+                    
+                    到底啥叫懂业务？业务的三重视角
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4.2" data-path="../../ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/ye-wu-san-zhong-shi-jiao-ye-wu-mo-xing.html">
+            
+                <a href="../../ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/ye-wu-san-zhong-shi-jiao-ye-wu-mo-xing.html">
+            
+                    
+                    业务三重视角——业务模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4.3" data-path="../../ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/ye-wu-san-zhong-shi-jiao-shang-ye-mo-shi.html">
+            
+                <a href="../../ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/ye-wu-san-zhong-shi-jiao-shang-ye-mo-shi.html">
+            
+                    
+                    业务三重视角——商业模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="../../ye-wu-jia-gou/dian-shang-fen-xi-bi-dong-de-zhi-biao-ti-xi-yin-liu-zhuan-hua-liu-cun-yi-wen-dai-ni-gao-dong.html">
+            
+                <a href="../../ye-wu-jia-gou/dian-shang-fen-xi-bi-dong-de-zhi-biao-ti-xi-yin-liu-zhuan-hua-liu-cun-yi-wen-dai-ni-gao-dong.html">
+            
+                    
+                    电商分析必懂的指标体系，引流、转化、留存，一文带你搞懂
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >大数据分析常用去重算法分析『HyperLogLog 篇』</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x5927;&#x6570;&#x636E;&#x5206;&#x6790;&#x5E38;&#x7528;&#x53BB;&#x91CD;&#x7B97;&#x6CD5;&#x5206;&#x6790;&#x300E;hyperloglog-&#x7BC7;&#x300F;">&#x5927;&#x6570;&#x636E;&#x5206;&#x6790;&#x5E38;&#x7528;&#x53BB;&#x91CD;&#x7B97;&#x6CD5;&#x5206;&#x6790;&#x300E;HyperLogLog &#x7BC7;&#x300F;</h1>
+<p>&#x4E0A;&#x7BC7;&#x4ECB;&#x7ECD;&#x4E86;&#x5229;&#x7528; Roaring Bitmap &#x6765;&#x8FDB;&#x884C;&#x7CBE;&#x786E;&#x53BB;&#x91CD;&#x3002;&#x867D;&#x7136;&#x8FD9;&#x79CD;&#x7B97;&#x6CD5;&#x80FD;&#x5927;&#x5927;&#x5730;&#x51CF;&#x5C11;&#x5B58;&#x50A8;&#x5F00;&#x9500;&#xFF0C;&#x4F46;&#x662F;&#x968F;&#x7740;&#x6570;&#x636E;&#x91CF;&#x7684;&#x589E;&#x5927;&#xFF0C;&#x5B83;&#x4F9D;&#x7136;&#x9762;&#x4E34;&#x7740;&#x5B58;&#x50A8;&#x4E0A;&#x7684;&#x538B;&#x529B;&#x3002;&#x5728;&#x672C;&#x7BC7;&#x63A8;&#x9001;&#x4E2D;&#x5C06;&#x8981;&#x4ECB;&#x7ECD;&#x7684; HyperLogLog&#xFF08;&#x4E0B;&#x79F0; HLL&#xFF09;&#x662F;&#x4E00;&#x79CD;&#x975E;&#x7CBE;&#x786E;&#x7684;&#x53BB;&#x91CD;&#x7B97;&#x6CD5;&#xFF0C;&#x5B83;&#x7684;&#x7279;&#x70B9;&#x662F;&#x5177;&#x6709;&#x975E;&#x5E38;&#x4F18;&#x5F02;&#x7684;&#x7A7A;&#x95F4;&#x590D;&#x6742;&#x5EA6;&#xFF08;&#x51E0;&#x4E4E;&#x53EF;&#x4EE5;&#x8FBE;&#x5230;&#x5E38;&#x6570;&#x7EA7;&#x522B;&#xFF09;&#x3002;</p>
+<figure><img src="../../gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
+
+<p>HLL &#x7B97;&#x6CD5;&#x9700;&#x8981;&#x5B8C;&#x6574;&#x904D;&#x5386;&#x6240;&#x6709;&#x5143;&#x7D20;&#x4E00;&#x6B21;&#xFF0C;&#x800C;&#x975E;&#x591A;&#x6B21;&#x6216;&#x91C7;&#x6837;&#xFF1B;&#x8BE5;&#x7B97;&#x6CD5;&#x53EA;&#x80FD;&#x8BA1;&#x7B97;&#x96C6;&#x5408;&#x4E2D;&#x6709;&#x591A;&#x5C11;&#x4E2A;&#x4E0D;&#x91CD;&#x590D;&#x7684;&#x5143;&#x7D20;&#xFF0C;&#x4E0D;&#x80FD;&#x7ED9;&#x51FA;&#x6BCF;&#x4E2A;&#x5143;&#x7D20;&#x7684;&#x51FA;&#x73B0;&#x6B21;&#x6570;&#x6216;&#x662F;&#x5224;&#x65AD;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x662F;&#x5426;&#x4E4B;&#x524D;&#x51FA;&#x73B0;&#x8FC7;&#xFF1B;&#x591A;&#x4E2A;&#x4F7F;&#x7528; HLL &#x7EDF;&#x8BA1;&#x51FA;&#x7684;&#x57FA;&#x6570;&#x503C;&#x53EF;&#x4EE5;&#x878D;&#x5408;&#x3002;</p>
+<figure><img src="../../gitbook/assets/image (26).png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src="../../gitbook/assets/image (43).png" alt=""><figcaption></figcaption></figure>
+
+<p>HLL &#x7B97;&#x6CD5;&#x6709;&#x7740;&#x975E;&#x5E38;&#x4F18;&#x5F02;&#x7684;&#x7A7A;&#x95F4;&#x590D;&#x6742;&#x5EA6;&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5B83;&#x7684;&#x7A7A;&#x95F4;&#x5360;&#x7528;&#x968F;&#x7740;&#x57FA;&#x6570;&#x503C;&#x7684;&#x589E;&#x957F;&#x5E76;&#x6CA1;&#x6709;&#x53D8;&#x5316;&#x3002;HLL &#x540E;&#x9762;&#x4E0D;&#x540C;&#x7684;&#x6570;&#x5B57;&#x4EE3;&#x8868;&#x7740;&#x4E0D;&#x540C;&#x7684;&#x7CBE;&#x5EA6;&#xFF0C;&#x6570;&#x5B57;&#x8D8A;&#x5927;&#xFF0C;&#x7CBE;&#x5EA6;&#x8D8A;&#x9AD8;&#xFF0C;&#x5360;&#x7528;&#x7684;&#x7A7A;&#x95F4;&#x4E5F;&#x8D8A;&#x5927;&#xFF0C;&#x53EF;&#x4EE5;&#x8BA4;&#x4E3A; HLL &#x7684;&#x7A7A;&#x95F4;&#x5360;&#x7528;&#x53EA;&#x548C;&#x7CBE;&#x5EA6;&#x6210;&#x6B63;&#x76F8;&#x5173;&#x3002;</p>
+<p><strong>HLL&#x7B97;&#x6CD5;&#x539F;&#x7406;&#x611F;&#x6027;&#x8BA4;&#x77E5;</strong></p>
+<figure><img src="../../gitbook/assets/image (22).png" alt=""><figcaption></figcaption></figure>
+
+<p>HLL &#x7B97;&#x6CD5;&#x7684;&#x539F;&#x7406;&#x4F1A;&#x6D89;&#x53CA;&#x5230;&#x6BD4;&#x8F83;&#x591A;&#x7684;&#x6570;&#x5B66;&#x77E5;&#x8BC6;&#xFF0C;&#x8FD9;&#x8FB9;&#x5BF9;&#x8FD9;&#x4E9B;&#x6570;&#x5B66;&#x539F;&#x7406;&#x548C;&#x8BC1;&#x660E;&#x4E0D;&#x4F1A;&#x5C55;&#x5F00;&#x3002;&#x4E3E;&#x4E00;&#x4E2A;&#x751F;&#x6D3B;&#x4E2D;&#x7684;&#x4F8B;&#x5B50;&#x6765;&#x5E2E;&#x52A9;&#x5927;&#x5BB6;&#x7406;&#x89E3;HLL&#x7B97;&#x6CD5;&#x7684;&#x539F;&#x7406;&#xFF1A;&#x6BD4;&#x5982;&#x4F60;&#x5728;&#x8FDB;&#x884C;&#x4E00;&#x4E2A;&#x5B9E;&#x9A8C;&#xFF0C;&#x5185;&#x5BB9;&#x662F;&#x4E0D;&#x505C;&#x5730;&#x629B;&#x786C;&#x5E01;&#xFF0C;&#x8BB0;&#x5F55;&#x4F60;&#x8FDE;&#x7EED;&#x629B;&#x5230;&#x6B63;&#x9762;&#x7684;&#x6B21;&#x6570;&#xFF08;&#x8FD9;&#x662F;&#x6570;&#x5B66;&#x4E2D;&#x7684;&#x4F2F;&#x52AA;&#x5229;&#x8FC7;&#x7A0B;&#xFF0C;&#x611F;&#x5174;&#x8DA3;&#x540C;&#x5B66;&#x53EF;&#x4EE5;&#x81EA;&#x884C;&#x7814;&#x7A76;&#x4E0B;&#xFF09;&#xFF1B;&#x5982;&#x679C;&#x4F60;&#x6700;&#x591A;&#x7684;&#x8FDE;&#x629B;&#x6B63;&#x9762;&#x8BB0;&#x5F55;&#x662F;3&#x6B21;&#xFF0C;&#x90A3;&#x53EF;&#x4EE5;&#x60F3;&#x8C61;&#x4F60;&#x5E76;&#x6CA1;&#x6709;&#x505A;&#x8FD9;&#x4E2A;&#x5B9E;&#x9A8C;&#x592A;&#x591A;&#x6B21;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x6700;&#x957F;&#x7684;&#x8FDE;&#x629B;&#x6B63;&#x9762;&#x8BB0;&#x5F55;&#x662F; 20 &#x6B21;&#xFF0C;&#x90A3;&#x4F60;&#x53EF;&#x80FD;&#x8FDB;&#x884C;&#x4E86;&#x8FD9;&#x4E2A;&#x5B9E;&#x9A8C;&#x4E0A;&#x5343;&#x6B21;&#x3002;</p>
+<p>&#x4E00;&#x79CD;&#x7406;&#x8BBA;&#x4E0A;&#x5B58;&#x5728;&#x7684;&#x60C5;&#x51B5;&#x662F;&#xFF0C;&#x4F60;&#x975E;&#x5E38;&#x5E78;&#x8FD0;&#xFF0C;&#x7B2C;&#x4E00;&#x6B21;&#x8FDB;&#x884C;&#x8FD9;&#x4E2A;&#x5B9E;&#x9A8C;&#x5C31;&#x8FDE;&#x629B;&#x4E86; 20 &#x6B21;&#x6B63;&#x9762;&#xFF0C;&#x6211;&#x4EEC;&#x4E5F;&#x4F1A;&#x8BA4;&#x4E3A;&#x4F60;&#x8FDB;&#x884C;&#x4E86;&#x5F88;&#x591A;&#x6B21;&#x8FD9;&#x4E2A;&#x5B9E;&#x9A8C;&#x624D;&#x5F97;&#x5230;&#x4E86;&#x8FD9;&#x4E2A;&#x8BB0;&#x5F55;&#xFF0C;&#x8FD9;&#x5C31;&#x4F1A;&#x5BFC;&#x81F4;&#x9519;&#x8BEF;&#x7684;&#x9884;&#x4F30;&#xFF1B;&#x6539;&#x8FDB;&#x7684;&#x65B9;&#x5F0F;&#x662F;&#x8BF7; 10 &#x4F4D;&#x540C;&#x5B66;&#x8FDB;&#x884C;&#x8FD9;&#x9879;&#x5B9E;&#x9A8C;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x53EF;&#x4EE5;&#x89C2;&#x5BDF;&#x5230;&#x66F4;&#x591A;&#x7684;&#x6837;&#x672C;&#x6570;&#x636E;&#xFF0C;&#x964D;&#x4F4E;&#x51FA;&#x73B0;&#x4E0A;&#x8FF0;&#x60C5;&#x51B5;&#x7684;&#x6982;&#x7387;&#x3002;&#x8FD9;&#x5C31;&#x662F; HLL &#x7B97;&#x6CD5;&#x7684;&#x6838;&#x5FC3;&#x601D;&#x60F3;&#x3002;\</p>
+<p><strong>HLL&#x7B97;&#x6CD5;&#x5177;&#x4F53;&#x5B9E;&#x73B0;</strong></p>
+<figure><img src="../../gitbook/assets/image (24).png" alt=""><figcaption></figcaption></figure>
+
+<p>HLL &#x4F1A;&#x901A;&#x8FC7;&#x4E00;&#x4E2A; hash &#x51FD;&#x6570;&#x6765;&#x6C42;&#x51FA;&#x96C6;&#x5408;&#x4E2D;&#x6240;&#x6709;&#x5143;&#x7D20;&#x7684; hash &#x503C;&#xFF08;&#x4E8C;&#x8FDB;&#x5236;&#x8868;&#x793A;&#x7684; hash &#x503C;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x4E00;&#x4E32;&#x629B;&#x786C;&#x5E01;&#x6B63;&#x53CD;&#x9762;&#x7ED3;&#x679C;&#x7684;&#x5E8F;&#x5217;&#xFF09;&#xFF0C;&#x5F97;&#x5230;&#x4E00;&#x4E2A; hash &#x503C;&#x7684;&#x96C6;&#x5408;&#xFF0C;&#x7136;&#x540E;&#x627E;&#x51FA;&#x8BE5; hash &#x503C;&#x96C6;&#x5408;&#x4E2D;&#xFF0C;&#x7B2C;&#x4E00;&#x4E2A; 1 &#x51FA;&#x73B0;&#x7684;&#x6700;&#x665A;&#x7684;&#x4F4D;&#x7F6E;&#x3002;&#x4F8B;&#x5982;&#x6709;&#x96C6;&#x5408;&#x4E3A; [010, 100, 001], &#x96C6;&#x5408;&#x4E2D;&#x5143;&#x7D20;&#x7684;&#x7B2C;&#x4E00;&#x4E2A; 1 &#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#x5206;&#x522B;&#x4E3A; 2, 1, 3&#xFF0C;&#x53EF;&#x4EE5;&#x5F97;&#x5230;&#x91CC;&#x9762;&#x6700;&#x5927;&#x7684;&#x503C;&#x4E3A; 3&#xFF0C;&#x6545;&#x8BE5;&#x96C6;&#x5408;&#x4E2D;&#x7B2C;&#x4E00;&#x4E2A;1&#x51FA;&#x73B0;&#x7684;&#x6700;&#x665A;&#x7684;&#x4F4D;&#x7F6E;&#x4E3A; 3&#x3002;&#x56E0;&#x4E3A;&#x6BCF;&#x4E2A;&#x4F4D;&#x7F6E;&#x4E0A;&#x51FA;&#x73B0;1&#x7684;&#x6982;&#x7387;&#x90FD;&#x662F; 1/2&#xFF0C;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x505A;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x63A8;&#x65AD;&#xFF0C;&#x8BE5;&#x96C6;&#x5408;&#x4E2D;&#x6709; 8 &#x4E2A;&#x4E0D;&#x91CD;&#x590D;&#x7684;&#x5143;&#x7D20;&#x3002;</p>
+<p>\</p>
+<p>&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x8FD9;&#x79CD;&#x7B80;&#x5355;&#x7684;&#x63A8;&#x65AD;&#x8BA1;&#x7B97;&#x51FA;&#x6765;&#x96C6;&#x5408;&#x7684;&#x57FA;&#x6570;&#x503C;&#x662F;&#x6709;&#x8F83;&#x5927;&#x7684;&#x504F;&#x5DEE;&#x7684;&#xFF0C;&#x90A3;&#x5982;&#x4F55;&#x6765;&#x51CF;&#x5C11;&#x504F;&#x5DEE;&#x5462;&#xFF1F;&#x6B63;&#x5982;&#x6211;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x91CC;&#x8BF4;&#x7684;&#x4E00;&#x6837;&#xFF0C;HLL &#x901A;&#x8FC7;&#x591A;&#x6B21;&#x7684;&#x8FDB;&#x884C;&#x8BD5;&#x9A8C;&#x6765;&#x51CF;&#x5C11;&#x8BEF;&#x5DEE;&#x3002;&#x90A3;&#x5B83;&#x662F;&#x5982;&#x4F55;&#x8FDB;&#x884C;&#x591A;&#x6B21;&#x7684;&#x5B9E;&#x9A8C;&#x7684;&#x5462;&#xFF1F;&#x8FD9;&#x91CC; HLL &#x4F7F;&#x7528;&#x4E86;&#x5206;&#x6876;&#x7684;&#x601D;&#x60F3;&#xFF0C;&#x4E0A;&#x6587;&#x4E2D;&#x6211;&#x4EEC;&#x4E00;&#x76F4;&#x6709;&#x63D0;&#x5230;&#x4E00;&#x4E2A;&#x7CBE;&#x5EA6;&#x7684;&#x6982;&#x5FF5;&#xFF0C;&#x6BD4;&#x5982;&#x8BF4; HLL(10)&#xFF0C;&#x8FD9;&#x4E2A; 10 &#x4EE3;&#x8868;&#x7684;&#x5C31;&#x662F;&#x53D6;&#x8BE5;&#x5143;&#x7D20;&#x5BF9;&#x5E94; Hash &#x503C;&#x4E8C;&#x8FDB;&#x5236;&#x7684;&#x540E; 10 &#x4F4D;&#xFF0C;&#x8BA1;&#x7B97;&#x51FA;&#x8BB0;&#x5F55;&#x5BF9;&#x5E94;&#x7684;&#x6876;&#xFF0C;&#x6876;&#x4E2D;&#x4F1A;&#x8BB0;&#x5F55;&#x4E00;&#x4E2A;&#x6570;&#x5B57;&#xFF0C;&#x4EE3;&#x8868;&#x5BF9;&#x5E94;&#x5230;&#x8BE5;&#x6876;&#x7684; hash &#x503C;&#x7684;&#x7B2C;&#x4E00;&#x4E2A; 1 &#x51FA;&#x73B0;&#x7684;&#x6700;&#x665A;&#x7684;&#x4F4D;&#x7F6E;&#x3002;&#x5982;&#x4E0A;&#x56FE;&#xFF0C;&#x8BE5; hash &#x503C;&#x7684;&#x540E; 10 &#x4F4D;&#x7684; hash &#x503C;&#x662F; 0000001001&#xFF0C;&#x8F6C;&#x6210; 10 &#x8FDB;&#x5236;&#x662F; 9&#xFF0C;&#x5BF9;&#x5E94;&#x7B2C; 9 &#x53F7;&#x6876;&#xFF0C;&#x800C;&#x8BE5; hash &#x503C;&#x7B2C;&#x4E00;&#x4E2A; 1 &#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#x662F;&#x7B2C; 6 &#x4F4D;&#xFF0C;&#x6BD4;&#x539F;&#x5148; 9 &#x53F7;&#x6876;&#x4E2D;&#x7684;&#x6570;&#x5B57;&#x5927;&#xFF0C;&#x6545;&#x628A; 9 &#x53F7;&#x6876;&#x4E2D;&#x7684;&#x6570;&#x5B57;&#x66F4;&#x65B0;&#x4E3A; 6&#x3002;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x6876;&#x7684;&#x4E2A;&#x6570;&#x8D8A;&#x591A;&#xFF0C;HLL &#x7B97;&#x6CD5;&#x7684;&#x7CBE;&#x5EA6;&#x5C31;&#x8D8A;&#x9AD8;&#xFF0C;HLL(10) &#x6709; 1024(210) &#x4E2A;&#x6876;&#xFF0C;HLL(16)&#x6709; 65536(216) &#x4E2A;&#x6876;&#x3002;&#x540C;&#x6837;&#x7684;&#xFF0C;&#x6876;&#x7684;&#x4E2A;&#x6570;&#x8D8A;&#x591A;&#xFF0C;&#x6240;&#x5360;&#x7528;&#x7684;&#x7A7A;&#x95F4;&#x4E5F;&#x4F1A;&#x8D8A;&#x5927;&#x3002;</p>
+<figure><img src="../../gitbook/assets/image (59).png" alt=""><figcaption></figcaption></figure>
+
+<p>&#x521A;&#x624D;&#x7684;&#x4F8B;&#x5B50;&#x6211;&#x4EEC;&#x7701;&#x7565;&#x4E86;&#x4E00;&#x4E9B;&#x7EC6;&#x8282;&#xFF0C;&#x4E3A;&#x4E86;&#x8BA9;&#x5927;&#x5BB6;&#x4E0D;&#x81F3;&#x4E8E;&#x8FF7;&#x5931;&#x5728;&#x7EC6;&#x8282;&#x4E2D;&#x800C;&#x5FFD;&#x89C6;&#x4E86;&#x91CD;&#x70B9;&#xFF0C;&#x771F;&#x5B9E;&#x7684; HLL &#x7B97;&#x6CD5;&#x7684;&#x5B8C;&#x6574;&#x63CF;&#x8FF0;&#x89C1;&#x4E0A;&#x56FE;&#xFF0C;&#x8FD9;&#x8FB9;&#x7684;&#x91CD;&#x70B9;&#x662F;&#x8BA1;&#x7B97;&#x6876;&#x4E2D;&#x5E73;&#x5747;&#x6570;&#x65F6;&#x4F7F;&#x7528;&#x8C03;&#x548C;&#x5E73;&#x5747;&#x6570;&#x3002;&#x8C03;&#x548C;&#x5E73;&#x5747;&#x6570;&#x7684;&#x4F18;&#x70B9;&#x662F;&#x53EF;&#x4EE5;&#x8FC7;&#x6EE4;&#x6389;&#x4E0D;&#x5065;&#x5EB7;&#x7684;&#x7EDF;&#x8BA1;&#x503C;&#xFF0C;&#x4F7F;&#x7528;&#x7B97;&#x672F;&#x5E73;&#x5747;&#x503C;&#x5BB9;&#x6613;&#x53D7;&#x5230;&#x6781;&#x503C;&#x7684;&#x5F71;&#x54CD;&#xFF08;&#x60F3;&#x60F3;&#x4F60;&#x548C;&#x9A6C;&#x4E91;&#x7684;&#x5E73;&#x5747;&#x5DE5;&#x8D44;&#xFF09;&#xFF0C;&#x800C;&#x8C03;&#x548C;&#x5E73;&#x5747;&#x6570;&#x7684;&#x7ED3;&#x679C;&#x4F1A;&#x503E;&#x5411;&#x4E8E;&#x96C6;&#x5408;&#x4E2D;&#x6BD4;&#x8F83;&#x5C0F;&#x7684;&#x5143;&#x7D20;&#x3002;HLL &#x8BBA;&#x6587;&#x4E2D;&#x8FD8;&#x6709;&#x66F4;&#x591A;&#x7684;&#x7EC6;&#x8282;&#x548C;&#x53C2;&#x6570;&#xFF0C;&#x8FD9;&#x8FB9;&#x5C31;&#x4E0D;&#x4E00;&#x4E00;&#x7EC6;&#x4E3E;&#xFF0C;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x540C;&#x5B66;&#x53EF;&#x4EE5;&#x81EA;&#x5DF1;&#x9605;&#x8BFB;&#x4E0B;&#x8BBA;&#x6587;&#x3002;</p>
+<p><strong>HLL&#x8BC4;&#x4F30;</strong></p>
+<figure><img src="../../gitbook/assets/image (41).png" alt=""><figcaption></figcaption></figure>
+
+<p>HLL &#x7684;&#x8BEF;&#x5DEE;&#x5206;&#x5E03;&#x670D;&#x4ECE;&#x6B63;&#x6001;&#x5206;&#x5E03;&#xFF0C;&#x5B83;&#x7684;&#x7A7A;&#x95F4;&#x590D;&#x6742;&#x5EA6;: O(m log2log2N), &#xFF2E; &#x4E3A;&#x57FA;&#x6570;, m &#x4E3A;&#x6876;&#x4E2A;&#x6570;&#x3002;&#x8FD9;&#x8FB9;&#x7ED9;&#x5927;&#x5BB6;&#x63A8;&#x5BFC;&#x4E00;&#x4E0B;&#x5B83;&#x7684;&#x7A7A;&#x95F4;&#x590D;&#x6742;&#x5EA6;&#xFF0C;&#x6211;&#x6709; 264 &#x4E2A;&#x7684;&#x4E0D;&#x91CD;&#x590D;&#x5143;&#x7D20;(Long. MAX_VALUE)&#xFF0C;&#x8868;&#x8FBE;&#x4E3A;&#x4E8C;&#x8FDB;&#x5236;&#x4E00;&#x4E2A;&#x6570;&#x662F; 64 &#x4F4D;&#xFF0C;&#x8FD9;&#x662F;&#x7B2C;&#x4E00;&#x91CD; log2, &#x90A3;&#x4E48;&#x7B2C;&#x4E00;&#x4E2A;1&#x6700;&#x665A;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x5728;&#x7B2C; 64 &#x4F4D;&#x3002;64 &#x9700;&#x8981; 6 &#x4E2A; bit (26=64) &#x5C31;&#x53EF;&#x4EE5;&#x5B58;&#x50A8;&#xFF0C;&#x8FD9;&#x662F;&#x7B2C;&#x4E8C;&#x91CD; log2&#x3002;&#x5982;&#x679C;&#x7CBE;&#x5EA6;&#x4E3A; 10&#xFF0C;&#x5219;&#x4F1A;&#x6709; 1024 &#x4E2A;&#x6876;&#xFF0C;&#x6240;&#x4EE5;&#x6700;&#x5916;&#x9762;&#x8FD8;&#x8981;&#x4E58;&#x4EE5;&#x6876;&#x7684;&#x4E2A;&#x6570;&#x3002;&#x7531;&#x4E8E;&#x9700;&#x8981;&#x5B8C;&#x6574;&#x7684;&#x904D;&#x5386;&#x5143;&#x7D20;&#x4E00;&#x904D;&#xFF0C;&#x6240;&#x4EE5;&#x5B83;&#x7684;&#x65F6;&#x95F4;&#x590D;&#x6742;&#x5EA6;&#x662F;&#x4E00;&#x4E2A;&#x7EBF;&#x6027;&#x7684;&#x65F6;&#x95F4;&#x590D;&#x6742;&#x5EA6;&#x3002;      </p>
+<p><strong>&#x5728;Kylin&#x4E2D;&#x7684;&#x5E94;&#x7528;</strong></p>
+<figure><img src="../../gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+
+<p>&#x5728; Kylin &#x4E2D;&#x4F7F;&#x7528; HLL &#x975E;&#x5E38;&#x7B80;&#x5355;&#xFF0C;&#x5728;&#x7F16;&#x8F91;&#x5EA6;&#x91CF;&#x7684;&#x9875;&#x9762;&#x9009;&#x62E9; COUNT DISTINCT&#xFF0C;Return Type &#x9009;&#x4E3A;&#x975E; Precisely &#x7684;&#x5176;&#x4ED6;&#x9009;&#x9879;&#xFF0C;&#x5927;&#x5BB6;&#x6839;&#x636E;&#x81EA;&#x5DF1;&#x7684;&#x9700;&#x6C42;&#x9009;&#x62E9;&#x4E0D;&#x540C;&#x7684;&#x7CBE;&#x5EA6;&#x5C31;&#x53EF;&#x4EE5;&#x6109;&#x5FEB;&#x5730;&#x4F7F;&#x7528;&#x4E86;&#x3002;</p>
+<p><strong>&#x603B;&#x7ED3;</strong></p>
+<figure><img src="../../gitbook/assets/image (25).png" alt=""><figcaption></figcaption></figure>
+
+<p>&#x6211;&#x4EEC;&#x56DE;&#x5230;&#x6700;&#x5F00;&#x59CB;&#x7684;&#x53BB;&#x91CD;&#x573A;&#x666F;&#xFF0C;&#x770B;&#x770B;&#x4F7F;&#x7528;&#x4E86; Bitmap &#x548C; HLL &#x4F1A;&#x7ED9;&#x6211;&#x4EEC;&#x5E26;&#x6765;&#x4EC0;&#x4E48;&#x589E;&#x76CA;&#xFF1A;&#x65E0;&#x4F18;&#x5316; case &#x4E0B;&#xFF0C;&#x6BCF;&#x4E2A; item &#x5BF9;&#x5E94;&#x7684; user_id &#x5C31;&#x53EF;&#x4EE5;&#x770B;&#x6210;&#x5B58;&#x50A8;&#x539F;&#x59CB;&#x503C;&#x7684;&#x4E00;&#x4E2A;&#x96C6;&#x5408;&#xFF1B;&#x5728;&#x4F7F;&#x7528; Bitmap &#x4F18;&#x5316;&#x7684;case &#x4E0B;&#xFF0C;&#x6BCF;&#x4E2A; item &#x5BF9;&#x5E94;&#x7684; user_id &#x5C31;&#x53EF;&#x4EE5;&#x770B;&#x6210;&#x4E00;&#x4E2A; Bitmap &#x5B9E;&#x4F8B;&#xFF0C;&#x540C;&#x7406; HLL&#x5C31;&#x662F;&#x4E00;&#x4E2A; HLL &#x7684;&#x5B9E;&#x4F8B;&#xFF0C;Bitmap/HLL &#x5B9E;&#x4F8B;&#x5360;&#x7528;&#x7684;&#x7A7A;&#x95F4;&#x90FD;&#x4F1A;&#x6BD4;&#x76F4;&#x63A5;&#x5B58;&#x50A8;&#x539F;&#x59CB;&#x503C;&#x7684;&#x96C6;&#x5408;&#x8981;&#x5C0F;&#xFF0C;&#x8FD9;&#x5C31;&#x8FBE;&#x5230;&#x4E86;&#x6211;&#x4EEC;&#x5F00;&#x59CB;&#x63D0;&#x7684;&#x51CF;&#x5C11; shuffle &#x6570;&#x636E;&#x91CF;&#x7684;&#x9700;&#x6C42;&#x3002;</p>
+<p><strong>Q\&amp;A</strong></p>
+<p>Q&#xFF1A;&#x60A8;&#x597D;&#xFF0C;&#x95EE;&#x4E00;&#x4E0B;&#x5173;&#x4E8E;&#x7CBE;&#x786E;&#x53BB;&#x91CD;&#x7684;&#x95EE;&#x9898;&#xFF0C; &#x6211;&#x9009;&#x62E9;&#x4E86;&#x975E;&#x7CBE;&#x786E;&#x53BB;&#x91CD;&#xFF0C;&#x6700;&#x540E;&#x7684;&#x8BEF;&#x5DEE;&#x7387;&#x6709;&#x65F6;&#x5019;&#x4F1A;&#x6BD4;&#x754C;&#x9762;&#x4E0A;&#x63D0;&#x793A;&#x7684;&#x503C;&#x8981;&#x9AD8;&#x4E00;&#x4E9B;&#xFF0C;&#x8FD9;&#x662F;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;</p>
+<p>A&#xFF1A;&#x9996;&#x5148; HLL &#x7684;&#x8BEF;&#x5DEE;&#x5206;&#x5E03;&#x670D;&#x4ECE;&#x6B63;&#x6001;&#x5206;&#x5E03;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x662F;&#x5728;99%&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#x662F;&#x8FD9;&#x4E2A;&#x8BEF;&#x5DEE;&#xFF0C;&#x540C;&#x65F6; HLL &#x5BF9;&#x4E8E;&#x57FA;&#x6570;&#x6BD4;&#x8F83;&#x4F4E;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x8BEF;&#x5DEE;&#x4F1A;&#x504F;&#x9AD8;&#x3002;&#x5982;&#x679C;&#x4F60;&#x7684;&#x57FA;&#x6570;&#x6BD4;&#x8F83;&#x4F4E;&#x7684;&#x8BDD;&#xFF0C;&#x6211;&#x63A8;&#x8350;&#x4F7F;&#x7528;&#x7CBE;&#x786E;&#x53BB;&#x91CD;&#x3002;</p>
+<p> </p>
+<p>Q&#xFF1A;&#x6211;&#x60F3;&#x8981;&#x4E86;&#x89E3;&#x4E00;&#x4E0B; Bitmap &#x5728; Kylin &#x4E2D;&#xFF0C;&#x5B83;&#x6700;&#x7EC8;&#x843D;&#x76D8;&#x5728; HBase &#x91CC;&#x9762;&#x662F;&#x4EC0;&#x4E48;&#x6837;&#x5B50;&#x7684;&#xFF1F;</p>
+<p>A&#xFF1A;&#x5728; HBase &#x4E2D;&#x5B58;&#x50A8;&#x7684;&#x5F53;&#x7136;&#x90FD;&#x662F; Bytes&#x3002;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#x5176;&#x5B9E;&#x5C31;&#x662F; Bitmap &#x7684;&#x5E8F;&#x5217;&#x5316;&#x7684;&#x5F62;&#x5F0F;&#xFF0C;Roaring Bitmap&#x63D0;&#x4F9B;&#x4E86;&#x5E8F;&#x5217;&#x5316;&#x548C;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x4F60;&#x4E5F;&#x53EF;&#x4EE5;&#x5199;&#x81EA;&#x5DF1;&#x7684;&#x5E8F;&#x5217;&#x5316;/&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x7684;&#x5B9E;&#x73B0;&#x3002;</p>
+<p> </p>
+<p>Q&#xFF1A;Roaring Bitmap &#x91CC;&#x8FD9;&#x4E9B; container &#x8981;&#x6211;&#x4EEC;&#x81EA;&#x5DF1;&#x624B;&#x52A8;&#x7684;&#x6307;&#x5B9A;&#x5417;&#x3002;</p>
+<p>A&#xFF1A;&#x4E0D;&#x9700;&#x8981;&#xFF0C;Roaring Bitmap &#x4F1A;&#x81EA;&#x52A8;&#x9009;&#x62E9;&#x4F7F;&#x7528;&#x54EA;&#x4E2A; Container&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="da-shu-ju-fen-xi-chang-yong-qu-zhong-suan-fa-fen-xi-bitmap-pian.html" class="navigation navigation-prev " aria-label="Previous page: 大数据分析常用去重算法分析『Bitmap 篇』">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../../ye-wu-jia-gou/" class="navigation navigation-next " aria-label="Next page: 业务架构">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"大数据分析常用去重算法分析『HyperLogLog 篇』","level":"1.2.4.2","depth":3,"next":{"title":"业务架构","level":"1.3","depth":1,"path":"ye-wu-jia-gou/README.md","ref":"ye-wu-jia-gou/README.md","articles":[{"title":"在线广告业务","level":"1.3.1","depth":2,"path":"ye-wu-jia-gou/zai-xian-guang-gao-ye-wu.md","ref":"ye-wu-jia-gou/zai-xian-guang-gao-ye-wu.md","articles":[]},{"title":"关于业务平台架构的思考","level":"1.3.2","depth":2,"path":"ye-wu-jia-gou/guan-yu-ye-wu-ping-tai-jia-gou-de-si-kao.md","ref":"ye-wu-jia-gou/guan-yu-ye-wu-ping-tai-jia-gou-de-si-kao.md","articles":[]},{"title":"用户模型","level":"1.3.3","depth":2,"path":"ye-wu-jia-gou/yong-hu-mo-xing/README.md","ref":"ye-wu-jia-gou/yong-hu-mo-xing/README.md","articles":[{"title":"用户系统设计:三户模型&三层身份模型","level":"1.3.3.1","depth":3,"path":"ye-wu-jia-gou/yong-hu-mo-xing/yong-hu-xi-tong-she-ji-san-hu-mo-xing-san-ceng-shen-fen-mo-xing.md","ref":"ye-wu-jia-gou/yong-hu-mo-xing/yong-hu-xi-tong-she-ji-san-hu-mo-xing-san-ceng-shen-fen-mo-xing.md","articles":[]},{"title":"解析「三户模型」及建立账户模型","level":"1.3.3.2","depth":3,"path":"ye-wu-jia-gou/yong-hu-mo-xing/jie-xi-san-hu-mo-xing-ji-jian-li-zhang-hu-mo-xing.md","ref":"ye-wu-jia-gou/yong-hu-mo-xing/jie-xi-san-hu-mo-xing-ji-jian-li-zhang-hu-mo-xing.md","articles":[]}]},{"title":"业务的三重视角","level":"1.3.4","depth":2,"path":"ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/README.md","ref":"ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/README.md","articles":[{"title":"到底啥叫懂业务？业务的三重视角","level":"1.3.4.1","depth":3,"path":"ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/dao-di-sha-jiao-dong-ye-wu-ye-wu-de-san-zhong-shi-jiao.md","ref":"ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/dao-di-sha-jiao-dong-ye-wu-ye-wu-de-san-zhong-shi-jiao.md","articles":[]},{"title":"业务三重视角——业务模型","level":"1.3.4.2","depth":3,"path":"ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/ye-wu-san-zhong-shi-jiao-ye-wu-mo-xing.md","ref":"ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/ye-wu-san-zhong-shi-jiao-ye-wu-mo-xing.md","articles":[]},{"title":"业务三重视角——商业模式","level":"1.3.4.3","depth":3,"path":"ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/ye-wu-san-zhong-shi-jiao-shang-ye-mo-shi.md","ref":"ye-wu-jia-gou/ye-wu-de-san-zhong-shi-jiao/ye-wu-san-zhong-shi-jiao-shang-ye-mo-shi.md","articles":[]}]},{"title":"电商分析必懂的指标体系，引流、转化、留存，一文带你搞懂","level":"1.3.5","depth":2,"path":"ye-wu-jia-gou/dian-shang-fen-xi-bi-dong-de-zhi-biao-ti-xi-yin-liu-zhuan-hua-liu-cun-yi-wen-dai-ni-gao-dong.md","ref":"ye-wu-jia-gou/dian-shang-fen-xi-bi-dong-de-zhi-biao-ti-xi-yin-liu-zhuan-hua-liu-cun-yi-wen-dai-ni-gao-dong.md","articles":[]}]},"previous":{"title":"大数据分析常用去重算法分析『Bitmap 篇』","level":"1.2.4.1","depth":3,"path":"xi-tong-jia-gou/da-shu-ju/da-shu-ju-fen-xi-chang-yong-qu-zhong-suan-fa-fen-xi-bitmap-pian.md","ref":"xi-tong-jia-gou/da-shu-ju/da-shu-ju-fen-xi-chang-yong-qu-zhong-suan-fa-fen-xi-bitmap-pian.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"xi-tong-jia-gou/da-shu-ju/da-shu-ju-fen-xi-chang-yong-qu-zhong-suan-fa-fen-xi-hyperloglog-pian.md","mtime":"2023-07-10T09:32:52.064Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2023-07-10T13:35:09.374Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
